@@ -61,7 +61,7 @@ const MapComponent: React.FC<Ship> = () => {
         process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
       }
       style={{ width: '100%', height: '100vh' }}
-      mapStyle='mapbox://styles/david-hanenko/cm6ybxic3006001qqchgt3hut?t=2023-11-16T14:59:09.999Z'
+      mapStyle='mapbox://styles/david-hanenko/cm73ctjx800ae01s84jwm7to8'
       onMove={evt => setViewState(evt.viewState)}
     >
       {ships.map(ship => {
