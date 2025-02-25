@@ -12,6 +12,7 @@ export const getApiToken = async () => {
         client_secret: process.env.API_CLIENT_SECRET || '',
         grant_type: 'client_credentials',
       }),
+      cache: 'no-store',
       // next: {
       //   revalidate: 60 * 60, // 1 hour
       // },
