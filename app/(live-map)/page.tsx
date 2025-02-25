@@ -1,11 +1,33 @@
 import dynamic from 'next/dynamic';
 
-const Map = dynamic(() => import('./components/Map'));
+import {
+  getShipsData,
+  getShipsDataGeo,
+} from '../actions/ships';
 
-export default function LiveMap() {
+const MapComponent = dynamic(
+  () => import('./components/Map')
+);
+
+export default async function LiveMap() {
+  // if (!token) {
+  //   return (
+  //     <div className='w-full h-screen flex items-center justify-center'>
+  //       <p className='text-2xl font-bold'>
+  //         Failed to load map
+  //       </p>
+  //     </div>
+  //   );
+  // }
+
+  const ships = await getShipsDataGeo();
+  // const ships = await getShipsData(token.access_token);
+
+  console.log(ships[3]);
+
   return (
     <main className='w-full h-screen'>
-      <Map />
+      <MapComponent ships={ships} />
     </main>
   );
 }
