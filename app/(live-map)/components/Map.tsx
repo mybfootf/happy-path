@@ -152,9 +152,9 @@ const MapComponent: React.FC<MapComponentProps> = ({
 
           <div
             className={`flex items-center justify-between gap-4 border p-2 rounded-md ${
-              selectedShip.risk == 'high'
+              selectedShip.properties?.risk == 'high'
                 ? 'text-red-500 border-red-500 bg-red-100'
-                : selectedShip.risk == 'medium'
+                : selectedShip.properties?.risk == 'medium'
                 ? 'text-yellow-500 border-yellow-500 bg-yellow-100'
                 : 'text-green-500 border-green-500 bg-green-100'
             }`}
