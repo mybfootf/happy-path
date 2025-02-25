@@ -25,6 +25,7 @@ export const getShipsDataGeo = async () => {
         // next: {
         //   revalidate: 60 * 60,
         // },
+        
       }
     );
 
