@@ -64,14 +64,12 @@ const MapComponent: React.FC<MapComponentProps> = ({
           ship.geometry.coordinates[0],
           ship.geometry.coordinates[1],
         ],
-        zoom: 11,
+        zoom: 8,
         duration: 1200, // Smooth animation duration
         easing: easeCubic, // Smooth movement
       });
     }
   };
-
-  console.log(selectedShip);
 
   return (
     <Map
@@ -85,7 +83,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
       onMove={evt => setViewState(evt.viewState)}
     >
       {ships &&
-        ships.map((ship, i) => {
+        ships.map(ship => {
           const shipImg =
             ship.properties?.risk === 'high'
               ? shipRedImg

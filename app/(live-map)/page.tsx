@@ -1,9 +1,6 @@
 import dynamic from 'next/dynamic';
 
-import {
-  getShipsData,
-  getShipsDataGeo,
-} from '../actions/ships';
+import { getShipsDataGeo } from '../actions/ships';
 
 const MapComponent = dynamic(
   () => import('./components/Map')
@@ -22,8 +19,6 @@ export default async function LiveMap() {
 
   const ships = await getShipsDataGeo();
   // const ships = await getShipsData(token.access_token);
-
-  console.log(ships[3]);
 
   return (
     <main className='w-full h-screen'>
