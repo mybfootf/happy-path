@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import SideNav from './components/SideNav';
 import TopNav from './components/TopNav';
+import { CommandCenterPanel } from './components/command-center/CommandCenterPanel';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
         <div className='relative'>
           <TopNav />
           <SideNav />
+          <CommandCenterPanel />
           {children}
         </div>
       </body>
