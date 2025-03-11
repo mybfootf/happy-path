@@ -78,29 +78,31 @@ export const getShipsData = async (token: string) => {
           Authorization: `Bearer ${token}`,
         },
         next: {
-          revalidate: 60,
+          revalidate: 60 * 60,
         },
       }
     );
 
     const data = await response.json();
 
-    const ships = data.map((ship: any) => {
-      if (ship.shipType >= 80 && ship.shipType < 85) {
-        const riskLevel =
-          ship.shipType > 83
-            ? 'high'
-            : ship.shipType >= 81 && ship.shipType <= 83
-            ? 'medium'
-            : 'low';
+    const ships = data
+      .map((ship: any) => {
+        if (ship.shipType >= 80 && ship.shipType < 85) {
+          const riskLevel =
+            ship.shipType > 83
+              ? 'high'
+              : ship.shipType >= 81 && ship.shipType <= 83
+              ? 'medium'
+              : 'low';
 
-        return {
-          ...ship,
-          risk: riskLevel,
-        };
-      }
-    });
-
+          return {
+            ...ship,
+            risk: riskLevel,
+          };
+        }
+      })
+      .filter( ( el: any ) => el );
+    
     return ships;
     // return data.slice(0, 30);
   } catch (error) {
