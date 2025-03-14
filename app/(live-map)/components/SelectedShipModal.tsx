@@ -1,8 +1,9 @@
 import Image from 'next/image';
-import { CircleAlert, X } from 'lucide-react';
+import { X } from 'lucide-react';
 
 import { ArrowRight } from 'lucide-react';
 import flagImg from '@/public/images/flag.svg';
+import { RiskBar } from '@/app/components/shared/RiskBar';
 
 interface ShipProps {
   name: string;
@@ -54,29 +55,9 @@ export const SelectedShipModal = ({
       </div>
       <p className='text-gray1'>Oil/Chemical Tanker</p>
 
-      <div
-        className={`flex items-center justify-between gap-4 border p-2 rounded-md ${
-          selectedShip?.risk == 'high'
-            ? 'text-red-500 border-red-500 bg-red-100'
-            : selectedShip?.risk == 'medium'
-            ? 'text-yellow-500 border-yellow-500 bg-yellow-100'
-            : 'text-green-500 border-green-500 bg-green-100'
-        }`}
-      >
-        <div className={`flex items-center gap-1 `}>
-          <CircleAlert className={`w-4 h-4`} />
-          <p className='capitalize'>
-            {selectedShip?.risk} Risk
-          </p>
-        </div>
-        <p>
-          {selectedShip?.risk == 'high'
-            ? 'Illegal oil trade '
-            : selectedShip?.risk == 'medium'
-            ? 'Some medium risk'
-            : ''}
-        </p>
-      </div>
+      {selectedShip?.risk && (
+        <RiskBar risk={selectedShip?.risk} />
+      )}
 
       <ul className='text-gray1'>
         <li className='inline-flex items-center gap-1 mr-3 p-0'>

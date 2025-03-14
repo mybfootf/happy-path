@@ -6,15 +6,37 @@ import {
   ArrowLeftFromLine,
   Search,
   SlidersHorizontal,
-  Ellipsis,
 } from 'lucide-react';
 
-import shipImg from '@/public/images/ship_red.png';
-import Image from 'next/image';
+import { useCallback } from 'react';
+import { ShipItem } from './ShipItem';
 
 export const CommandCenterPanel = ships => {
   const { isCCenterOpen, onCCenterClose, onCCenterOpen } =
     useAuth();
+
+  const getReportTime = useCallback((msgTime: string) => {
+    const currentTime = new Date();
+    const reportTime = new Date(msgTime);
+    const timeDifference = Math.abs(
+      currentTime.getTime() - reportTime.getTime()
+    );
+    const minutesDifference = Math.floor(
+      timeDifference / 60000
+    );
+    if (minutesDifference < 1) {
+      return '1m';
+    }
+    if (minutesDifference > 59) {
+      return `${Math.floor(minutesDifference / 60)}h`;
+    }
+    if (minutesDifference > 60 * 24 - 1) {
+      return `${Math.floor(
+        minutesDifference / (60 * 24)
+      )}d`;
+    }
+    return `${minutesDifference}m`;
+  }, []);
 
   return (
     <div>
@@ -27,7 +49,7 @@ export const CommandCenterPanel = ships => {
             <ListChecks />
           </div>
         ) : (
-          <div className='text-gray-900 px-6 py-4 w-[400px] space-y-2 h-[calc(100vh-120px)] overflow-auto'>
+          <div className='text-gray-900 px-6 py-4 w-[400px] space-y-3 h-[calc(100vh-120px)] overflow-auto'>
             <div className='flex items-center justify-between gap-4'>
               <p className='text-2xl'>Command Center</p>
               <ArrowLeftFromLine
@@ -36,36 +58,30 @@ export const CommandCenterPanel = ships => {
               />
             </div>
             <div className='relative text-gray-600'>
-              <Search className='absolute top-1/2 left-2 -translate-y-1/2' />
+              <Search className='absolute top-1/2 left-2 -translate-y-1/2 text-gray-400' />
               <input
                 placeholder='Search'
-                className='p-2 border border-gray-300 w-full rounded-sm placeholder:pl-6'
+                className='p-2 border border-gray-300 w-full rounded-md pl-8'
               />
             </div>
             <div className='text-gray-500 flex items-center gap-4'>
-              <SlidersHorizontal />
-              <select className='border border-gray-300 rounded-full px-3'>
+              <SlidersHorizontal className='cursor-pointer' />
+              <select className='border border-gray-300 rounded-full py-[2px] px-3 cursor-pointer'>
                 <option>Risk level</option>
+                <option>Low</option>
+                <option>Medium</option>
+                <option>High</option>
               </select>
             </div>
 
             {/* Ships */}
             <div>
-              {ships?.ships.map((ship, index) => (
-                <div
-                  key={index}
-                  className='py-4 border-y border-gray-300'
-                >
-                  <div className='flex items-center justify-between'>
-                    <p className='text-gray-700 font-semibold'>
-                      {ship.name}
-                    </p>
-                    <Ellipsis className='cursor-pointer' />
-                  </div>
-                  <div className='flex items-center gap-4'>
-                    <Image src={shipImg} alt='' />
-                  </div>
-                </div>
+              {ships?.ships.map(ship => (
+                <ShipItem
+                  key={ship.mmsi}
+                  ship={ship}
+                  getReportTime={getReportTime}
+                />
               ))}
             </div>
           </div>
