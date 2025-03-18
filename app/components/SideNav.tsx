@@ -7,18 +7,24 @@ import {
   ChartNetwork,
   SearchCheck,
 } from 'lucide-react';
+import { useNav } from '@/hooks/useNav';
 
 export default function SideNav() {
   const [active, setActive] = useState('fleet');
-  const [expanded, setExpanded] = useState(false);
+
+  const {
+    isSideNavExpanded,
+    onSideNavExpand,
+    onSideNavCollapse,
+  } = useNav();
 
   return (
     <nav
       className={`absolute left:0 top-[72px] z-50 bg-primaryDark text-white px-4 h-screen ${
-        expanded ? 'w-[260px]' : 'w-[90px]'
+        isSideNavExpanded ? 'w-[260px]' : 'w-[90px]'
       } transition-all duration-300`}
-      onMouseOver={() => setExpanded(true)}
-      onMouseOut={() => setExpanded(false)}
+      onMouseOver={() => onSideNavExpand()}
+      onMouseOut={() => onSideNavCollapse()}
     >
       <ul className='flex flex-col gap-3 py-6'>
         <li
@@ -32,7 +38,9 @@ export default function SideNav() {
           <Ship />
           <p
             className={`${
-              expanded ? 'visible w-full' : 'hidden w-0'
+              isSideNavExpanded
+                ? 'visible w-full'
+                : 'hidden w-0'
             } absolute left-12 whitespace-nowrap`}
           >
             Fleet Tracking
@@ -49,7 +57,9 @@ export default function SideNav() {
           <ChartNetwork />
           <p
             className={`${
-              expanded ? 'visible w-full' : 'hidden w-0'
+              isSideNavExpanded
+                ? 'visible w-full'
+                : 'hidden w-0'
             } absolute left-12 whitespace-nowrap`}
           >
             Thread Assessment
@@ -66,7 +76,9 @@ export default function SideNav() {
           <SearchCheck />
           <p
             className={`${
-              expanded ? 'visible w-full' : 'hidden w-0'
+              isSideNavExpanded
+                ? 'visible w-full'
+                : 'hidden w-0'
             } absolute left-12 whitespace-nowrap`}
           >
             Entity Deep Dive

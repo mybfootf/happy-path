@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuth } from '@/hooks/useNav';
+import { useNav } from '@/hooks/useNav';
 import {
   ListChecks,
   ArrowLeftFromLine,
@@ -11,9 +11,24 @@ import {
 import { useCallback } from 'react';
 import { ShipItem } from './ShipItem';
 
-export const CommandCenterPanel = ships => {
-  const { isCCenterOpen, onCCenterClose, onCCenterOpen } =
-    useAuth();
+type Ship = {
+  mmsi: string;
+  name: string;
+  risk: string;
+  courseOverGround: number;
+  speedOverGround: number;
+  msgtime: string;
+  destination: string;
+  eta: string;
+};
+
+export const CommandCenterPanel = (ships: any) => {
+  const {
+    isCCenterOpen,
+    onCCenterClose,
+    onCCenterOpen,
+    isSideNavExpanded,
+  } = useNav();
 
   const getReportTime = useCallback((msgTime: string) => {
     const currentTime = new Date();
@@ -40,7 +55,13 @@ export const CommandCenterPanel = ships => {
 
   return (
     <div>
-      <div className='absolute top-[100px] left-[100px] z-40 flex justify-between items-center  bg-white rounded-md shadow-xl transition-all duration-300'>
+      <div
+        className={`absolute top-[100px] ${
+          isSideNavExpanded
+            ? 'left-[270px]'
+            : 'left-[100px]'
+        } z-40 flex justify-between items-center  bg-white rounded-md shadow-xl transition-all duration-300`}
+      >
         {!isCCenterOpen ? (
           <div
             className='text-gray-900 cursor-pointer w-full h-full px-6 py-4'
@@ -51,7 +72,9 @@ export const CommandCenterPanel = ships => {
         ) : (
           <div className='text-gray-900 px-6 py-4 w-[400px] space-y-3 h-[calc(100vh-120px)] overflow-auto'>
             <div className='flex items-center justify-between gap-4'>
-              <p className='text-2xl'>Command Center</p>
+              <p className='text-2xl font-bold'>
+                Command Center
+              </p>
               <ArrowLeftFromLine
                 className='cursor-pointer text-gray-400 '
                 onClick={() => onCCenterClose()}
@@ -76,7 +99,7 @@ export const CommandCenterPanel = ships => {
 
             {/* Ships */}
             <div>
-              {ships?.ships.map(ship => (
+              {ships?.ships.map((ship: Ship) => (
                 <ShipItem
                   key={ship.mmsi}
                   ship={ship}

@@ -4,6 +4,7 @@ import { X } from 'lucide-react';
 import { ArrowRight } from 'lucide-react';
 import flagImg from '@/public/images/flag.svg';
 import { RiskBar } from '@/app/components/shared/RiskBar';
+import { TripSummary } from '@/app/components/shared/TripSummary';
 
 interface ShipProps {
   name: string;
@@ -88,51 +89,9 @@ export const SelectedShipModal = ({
           Trip Summary
         </p>
 
-        <div className='flex items-center justify-between gap-4 border border-gray-300 p-4 rounded-sm'>
-          <div>
-            <div className='flex items-center gap-2'>
-              <Image
-                src={flagImg}
-                alt='flag.'
-                width={32}
-                height={24}
-              />
-              <p className='text-gray-500 text-lg font-bold'>
-                Oman
-              </p>
-            </div>
-            <p className='text-gray-500'>Sohar</p>
-            <p className='text-gray-500'>
-              ADT: 2025/01/16 16:28
-            </p>
-          </div>
-          <ArrowRight className='text-gray-500' />
-          <div>
-            <div className='flex items-center gap-2'>
-              <Image
-                src={flagImg}
-                alt='flag.'
-                width={32}
-                height={24}
-              />
-              <p className='text-gray-500 text-lg font-bold'>
-                Oman
-              </p>
-            </div>
-            <p className='text-gray-500'>
-              {selectedShip?.destination}
-            </p>
-            <p className='text-gray-500'>
-              {`ETA: 2025/02/${selectedShip?.eta.slice(
-                0,
-                2
-              )} ${selectedShip?.eta.slice(
-                2,
-                4
-              )}:${selectedShip?.eta.slice(4, 6)}`}
-            </p>
-          </div>
-        </div>
+        {selectedShip && (
+          <TripSummary ship={selectedShip} />
+        )}
       </div>
       <div className='flex justify-end'>
         <button className='bg-blue-600 text-white p-2 rounded-md font-bold px-8'>

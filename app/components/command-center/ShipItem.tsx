@@ -8,6 +8,7 @@ import {
 
 import shipImg from '@/public/images/ship_red.png';
 import { RiskBar } from '../shared/RiskBar';
+import { TripSummary } from '../shared/TripSummary';
 
 interface ShipProps {
   ship: {
@@ -16,6 +17,9 @@ interface ShipProps {
     courseOverGround: number;
     speedOverGround: number;
     msgtime: string;
+    routeProgress?: number;
+    destination: string;
+    eta: string;
   };
   getReportTime: (msgTime: string) => string;
 }
@@ -80,6 +84,29 @@ export const ShipItem: React.FC<ShipProps> = ({
             <span>ago</span>
           </div>
         </div>
+      </div>
+
+      {ship && (
+        <TripSummary ship={ship}>
+          <div className='flex items-center justify-between gap-4 mt-4'>
+            <input
+              type='range'
+              min={0}
+              max={100}
+              className='w-full'
+              value={ship?.routeProgress || 40}
+              readOnly
+            />
+            <p className='text-gray-500 text-sm text-center'>
+              {ship?.routeProgress || 40}%
+            </p>
+          </div>
+        </TripSummary>
+      )}
+      <div className='flex justify-end'>
+        <button className='text-white font-semibold bg-blue-500 rounded-md px-10 py-3'>
+          View Details
+        </button>
       </div>
     </div>
   );

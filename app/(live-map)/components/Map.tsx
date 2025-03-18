@@ -16,6 +16,7 @@ import shipGreenImg from '@/public/images/ship_green.svg';
 import { getShipDetails } from '@/app/actions/ships';
 import { SelectedShipModal } from './SelectedShipModal';
 import { SelectedShipRoute } from './SelectedShipRoute';
+import { Stats } from './Stats';
 
 interface ShipProps {
   name: string;
@@ -138,9 +139,6 @@ const MapComponent: React.FC<MapComponentProps> = ({
                     transform: `rotate(${ship.courseOverGround}deg)`,
                   }}
                 />
-                {/* <div
-              className={`absolute top-1/2 left-1/2 opacity-0 m-3 rounded-full h-10 w-10 shadow-lg animate-pulsate`}
-            ></div> */}
               </Marker>
             )
           );
@@ -158,6 +156,8 @@ const MapComponent: React.FC<MapComponentProps> = ({
           selectedShipData={selectedShipData}
         />
       )}
+
+      <Stats />
     </Map>
   );
 };
