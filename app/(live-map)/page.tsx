@@ -19,7 +19,7 @@ export default async function LiveMap() {
   // console.log(ships);
 
   return (
-    <main className='w-full h-screen'>
+    <main className='w-full h-screen relative'>
       <MapComponent
         ships={ships}
         token={token.access_token}
