@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import { X } from 'lucide-react';
 
-import { ArrowRight } from 'lucide-react';
 import flagImg from '@/public/images/flag.svg';
 import { RiskBar } from '@/app/components/shared/RiskBar';
 import { TripSummary } from '@/app/components/shared/TripSummary';
@@ -18,21 +17,40 @@ interface ShipProps {
   latitude: number;
   shipType: number;
   speed: number;
-  length: number;
-  width: number;
-  draught: number;
+  shipLength: number;
+  shipWidth: number;
+  shipDraught: number;
   heading: number;
 }
 
 type SelectedShipModalProps = {
   selectedShip: ShipProps | null;
-  setSelectedShip: (ship: ShipProps) => void;
+  setSelectedShip: (ship: ShipProps | null) => void;
+  isSelectedShipOpen: boolean;
+  setIsSelectedShipOpen: (
+    isSelectedShipOpen: boolean
+  ) => void;
+  setIsGenerateReportOpen: (
+    isGenerateReportOpen: boolean
+  ) => void;
 };
 
 export const SelectedShipModal = ({
   selectedShip,
   setSelectedShip,
+  isSelectedShipOpen,
+  setIsSelectedShipOpen,
+  setIsGenerateReportOpen,
 }: SelectedShipModalProps) => {
+  const handleClose = () => {
+    setSelectedShip(null);
+    setIsSelectedShipOpen(false);
+  };
+
+  const handleOpenGenerateReportModal = () => {
+    setIsSelectedShipOpen(false);
+    setIsGenerateReportOpen(true);
+  };
   return (
     <div className='absolute top-[90px] right-6 bg-white p-4 rounded-lg shadow-lg w-[500px] text-primaryDark space-y-4'>
       <div className='flex items-start justify-between gap-2'>
@@ -47,10 +65,7 @@ export const SelectedShipModal = ({
             {selectedShip && selectedShip.name}
           </h3>
         </div>
-        <button
-          className='text-2xl'
-          onClick={() => setSelectedShip(null)}
-        >
+        <button className='text-2xl' onClick={handleClose}>
           <X />
         </button>
       </div>
@@ -94,7 +109,10 @@ export const SelectedShipModal = ({
         )}
       </div>
       <div className='flex justify-end'>
-        <button className='bg-blue-600 text-white p-2 rounded-md font-bold px-8'>
+        <button
+          className='bg-blue-600 hover:bg-blue-600/90 text-sm text-white p-2 rounded-md font-bold px-8 transition'
+          onClick={handleOpenGenerateReportModal}
+        >
           Generate Report
         </button>
       </div>

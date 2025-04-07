@@ -8,6 +8,7 @@ import {
   SearchCheck,
 } from 'lucide-react';
 import { useNav } from '@/hooks/useNav';
+import Link from 'next/link';
 
 export default function SideNav() {
   const [active, setActive] = useState('fleet');
@@ -26,8 +27,9 @@ export default function SideNav() {
       onMouseOver={() => onSideNavExpand()}
       onMouseOut={() => onSideNavCollapse()}
     >
-      <ul className='flex flex-col gap-3 py-6'>
-        <li
+      <div className='flex flex-col gap-3 py-6'>
+        <Link
+          href='/'
           className={`${
             active == 'fleet'
               ? 'bg-white text-primaryDark hover:none'
@@ -45,8 +47,9 @@ export default function SideNav() {
           >
             Fleet Tracking
           </p>
-        </li>
-        <li
+        </Link>
+        <Link
+          href='/thread-assessment'
           className={`${
             active == 'threat'
               ? 'bg-white text-primaryDark hover:none'
@@ -64,14 +67,16 @@ export default function SideNav() {
           >
             Thread Assessment
           </p>
-        </li>
-        <li
+        </Link>
+
+        <Link
+          href='/entity'
           className={`${
-            active == 'dive'
+            active == 'entity'
               ? 'bg-white text-primaryDark hover:none'
               : 'text-white bg-none hover:bg-gray1'
           } py-3 px-4 rounded-md cursor-pointer flex items-center gap-2 relative`}
-          onClick={() => setActive('dive')}
+          onClick={() => setActive('entity')}
         >
           <SearchCheck />
           <p
@@ -83,8 +88,8 @@ export default function SideNav() {
           >
             Entity Deep Dive
           </p>
-        </li>
-      </ul>
+        </Link>
+      </div>
     </nav>
   );
 }

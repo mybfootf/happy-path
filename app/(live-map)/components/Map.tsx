@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 
 import Map, { Marker } from 'react-map-gl';
+import { useNav } from '@/hooks/useNav';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { easeCubic } from 'd3-ease';
-import { CircleAlert } from 'lucide-react';
 
 // import ships from '@/data/ships';
 import shipRedImg from '@/public/images/ship_red.svg';
@@ -17,8 +17,11 @@ import { getShipDetails } from '@/app/actions/ships';
 import { SelectedShipModal } from './SelectedShipModal';
 import { SelectedShipRoute } from './SelectedShipRoute';
 import { Stats } from './Stats';
+import { GenerateReportModal } from './GenerateReportModal';
+import { SelectRecipient } from './SelectRecipient';
+import { NotificationDialog } from '@/app/components/shared/NotificationDialog';
 
-interface ShipProps {
+export interface ShipProps {
   name: string;
   mmsi: number;
   courseOverGround: number;
@@ -30,10 +33,10 @@ interface ShipProps {
   latitude: number;
   shipType: number;
   speed: number;
-  length: number;
-  width: number;
-  draught: number;
   heading: number;
+  shipLength: number;
+  shipWidth: number;
+  shipDraught: number;
 }
 
 interface MapComponentProps {
@@ -49,8 +52,17 @@ const MapComponent: React.FC<MapComponentProps> = ({
     useState<ShipProps | null>(null);
   const [selectedShipData, setSelectedShipData] =
     useState(null);
+  const [isSelectedShipOpen, setIsSelectedShipOpen] =
+    useState(false);
+  const [isGenerateReportOpen, setIsGenerateReportOpen] =
+    useState(false);
+  const [isSelectRecipientOpen, setIsSelectRecipientOpen] =
+    useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] =
+    useState(false);
 
   const mapRef = useRef(null);
+  const { onCCenterOpen, onSideNavCollapse } = useNav();
 
   const [viewState, setViewState] = useState<{
     longitude: number;
@@ -71,6 +83,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
 
   const handleShipClick: HandleShipClick = ship => {
     setSelectedShip(ship);
+    setIsSelectedShipOpen(true);
     if (mapRef.current) {
       mapRef.current.easeTo({
         center: [ship.longitude, ship.latitude],
@@ -89,13 +102,17 @@ const MapComponent: React.FC<MapComponentProps> = ({
           token
         );
 
-        setSelectedShipData(data);
+        setSelectedShipData({
+          ...data,
+          properties: {
+            mmsi: selectedShip.mmsi,
+            risk: selectedShip.risk,
+          },
+        });
       }
     };
     getShiptData();
   }, [selectedShip, token]);
-
-  // console.log(selectedShipData);
 
   return (
     <Map
@@ -104,8 +121,12 @@ const MapComponent: React.FC<MapComponentProps> = ({
       mapboxAccessToken={
         process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
       }
-      style={{ width: '100%', height: '100vh' }}
-      mapStyle='mapbox://styles/david-hanenko/cm73ctjx800ae01s84jwm7to8?fresh=true'
+      style={{
+        width: '100%',
+        height: '100vh',
+        fontFamily: 'Inter',
+      }}
+      mapStyle='mapbox://styles/david-hanenko/cm8wgfqe600qx01sd1owd994m?fresh=true'
       onMove={evt => setViewState(evt.viewState)}
     >
       {ships &&
@@ -144,16 +165,58 @@ const MapComponent: React.FC<MapComponentProps> = ({
           );
         })}
 
-      {selectedShip && (
+      {selectedShip && isSelectedShipOpen && (
         <SelectedShipModal
           selectedShip={selectedShip}
           setSelectedShip={setSelectedShip}
+          isSelectedShipOpen={isSelectedShipOpen}
+          setIsSelectedShipOpen={setIsSelectedShipOpen}
+          setIsGenerateReportOpen={setIsGenerateReportOpen}
         />
       )}
 
       {selectedShipData && (
         <SelectedShipRoute
           selectedShipData={selectedShipData}
+        />
+      )}
+
+      {selectedShipData && isGenerateReportOpen && (
+        <GenerateReportModal
+          isGenerateReportOpen={isGenerateReportOpen}
+          setIsGenerateReportOpen={setIsGenerateReportOpen}
+          selectedShip={selectedShip}
+          setIsSelectRecipientOpen={
+            setIsSelectRecipientOpen
+          }
+        />
+      )}
+
+      {isSelectRecipientOpen && (
+        <SelectRecipient
+          setIsSelectRecipientOpen={
+            setIsSelectRecipientOpen
+          }
+          setIsGenerateReportOpen={setIsGenerateReportOpen}
+          setIsNotificationOpen={setIsNotificationOpen}
+        />
+      )}
+
+      {isNotificationOpen && (
+        <NotificationDialog
+          isOpen={isNotificationOpen}
+          setIsOpen={setIsNotificationOpen}
+          callback={() => {
+            setIsNotificationOpen(false);
+            onCCenterOpen();
+            onSideNavCollapse();
+          }}
+          btnText={'Return to Command Center'}
+          title={'Report Successfully Scheduled!'}
+          message={`Your report is being generated. Evidence collection and analysis may take up to 72 hours. You will be notified once it's ready for review in the Evidence Archive and sent to your recipients.`}
+          btnClN={
+            'bg-blue-600 hover:bg-blue-600/90 text-white'
+          }
         />
       )}
 

@@ -1,5 +1,7 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
+
 import { useNav } from '@/hooks/useNav';
 import {
   ListChecks,
@@ -30,6 +32,8 @@ export const CommandCenterPanel = (ships: any) => {
     isSideNavExpanded,
   } = useNav();
 
+  const pathUrl = usePathname();
+
   const getReportTime = useCallback((msgTime: string) => {
     const currentTime = new Date();
     const reportTime = new Date(msgTime);
@@ -52,6 +56,11 @@ export const CommandCenterPanel = (ships: any) => {
     }
     return `${minutesDifference}m`;
   }, []);
+
+  // display command center button/panel only on the fleet tracking page - home url page -> "/"
+  if (pathUrl !== '/') {
+    return null;
+  }
 
   return (
     <div>

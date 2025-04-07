@@ -11,6 +11,7 @@ type SelectedShipRouteProps = {
     };
     properties: {
       mmsi: number;
+      risk: string;
     };
   };
 };
@@ -22,8 +23,14 @@ export const SelectedShipRoute = ({
     id: 'ship-route',
     type: 'line',
     paint: {
-      'line-color': '#ff0000',
-      'line-width': 5,
+      'line-color': `${
+        selectedShipData.properties.risk === 'high'
+          ? '#FF0000'
+          : selectedShipData.properties.risk === 'medium'
+          ? '#FFA500'
+          : '#008000'
+      }`,
+      'line-width': 3,
       'line-opacity': 1,
     },
   };

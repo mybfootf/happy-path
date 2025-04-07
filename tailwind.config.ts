@@ -12,6 +12,8 @@ export default {
       colors: {
         primaryDark: '#1C1F27',
         gray1: '#84818A',
+        gray2: '#5A5A5A',
+        gray3: '#8E8E93',
       },
       keyframes: {
         pulsate: {
