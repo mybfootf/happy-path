@@ -61,7 +61,6 @@ export const CommandCenterPanel = (ships: any) => {
   if (pathUrl !== '/') {
     return null;
   }
-
   return (
     <div>
       <div

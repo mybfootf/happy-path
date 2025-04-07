@@ -50,13 +50,13 @@ export const TripSummary = ({
             </p>
           </div>
           <p className='text-gray-500'>
-            {ship.destination}
+            {ship?.destination}
           </p>
           <p className='text-gray-500'>
-            {`ETA: 2025/02/${ship?.eta.slice(
+            {`ETA: 2025/02/${ship?.eta?.slice(
               0,
               2
-            )} ${ship.eta.slice(2, 4)}:${ship.eta.slice(
+            )} ${ship?.eta?.slice(2, 4)}:${ship?.eta?.slice(
               4,
               6
             )}`}
