@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { X, ArrowDownUp } from 'lucide-react';
 
 import profileImg from '@/public/images/profile.png';
+import { useNav } from '@/hooks/useNav';
 
 type SelectRecipientProps = {
   setIsSelectRecipientOpen: (
@@ -22,6 +23,8 @@ export const SelectRecipient = ({
   setIsGenerateReportOpen,
   setIsNotificationOpen,
 }: SelectRecipientProps) => {
+  const { onCCenterClose } = useNav();
+
   const handleClose = () => {
     setIsSelectRecipientOpen(false);
   };
@@ -36,6 +39,7 @@ export const SelectRecipient = ({
   const handleSend = () => {
     setIsSelectRecipientOpen(false);
     setIsNotificationOpen(true);
+    onCCenterClose();
   };
 
   return (

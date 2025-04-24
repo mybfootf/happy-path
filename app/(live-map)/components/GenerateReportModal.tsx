@@ -5,6 +5,7 @@ import { ShipProps } from './Map';
 
 import shipImg from '@/public/images/luna-major.svg';
 import shipRouteImg from '@/public/images/ship-route.png';
+import { useNav } from '@/hooks/useNav';
 
 type GenerateReportModalProps = {
   isGenerateReportOpen: boolean;
@@ -21,7 +22,10 @@ export const GenerateReportModal = ({
   setIsGenerateReportOpen,
   selectedShip,
   setIsSelectRecipientOpen,
-}: GenerateReportModalProps) => {
+}: GenerateReportModalProps ) => {
+  
+  const { onCCenterClose } = useNav();
+
   const handleClose = () => {
     setIsGenerateReportOpen(false);
   };
@@ -29,6 +33,7 @@ export const GenerateReportModal = ({
   const handleProceed = () => {
     setIsGenerateReportOpen(false);
     setIsSelectRecipientOpen(true);
+    onCCenterClose();
   };
 
   return (
