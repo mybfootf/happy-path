@@ -4,6 +4,7 @@ import { X } from 'lucide-react';
 import flagImg from '@/public/images/flag.svg';
 import { RiskBar } from '@/app/components/shared/RiskBar';
 import { TripSummary } from '@/app/components/shared/TripSummary';
+import { useNav } from '@/hooks/useNav';
 
 interface ShipProps {
   name: string;
@@ -38,10 +39,11 @@ type SelectedShipModalProps = {
 export const SelectedShipModal = ({
   selectedShip,
   setSelectedShip,
-  isSelectedShipOpen,
   setIsSelectedShipOpen,
   setIsGenerateReportOpen,
 }: SelectedShipModalProps) => {
+  const { onCCenterClose } = useNav();
+
   const handleClose = () => {
     setSelectedShip(null);
     setIsSelectedShipOpen(false);
@@ -50,6 +52,7 @@ export const SelectedShipModal = ({
   const handleOpenGenerateReportModal = () => {
     setIsSelectedShipOpen(false);
     setIsGenerateReportOpen(true);
+    onCCenterClose();
   };
   return (
     <div className='absolute top-[90px] right-6 bg-white p-4 rounded-lg shadow-lg w-[500px] text-primaryDark space-y-4'>
